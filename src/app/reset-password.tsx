@@ -29,13 +29,8 @@ export default function ResetPasswordScreen() {
     defaultValues: { newPassword: '', confirmPassword: '' },
   });
 
-  function onSubmit(data: ResetPasswordFormValues) {
-    const _request: ResetPasswordRequest = {
-      challengeId: params.challengeId ?? 'local-challenge',
-      code: params.code ?? '000000',
-      newPassword: data.newPassword,
-    };
-    // TODO: call reset-password mutation with _request
+  function onSubmit(_data: ResetPasswordFormValues) {
+    // TODO: call the reset-password mutation after the backend is connected.
     router.dismissTo({ pathname: '/', params: { reset: '1' } });
   }
 

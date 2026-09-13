@@ -81,7 +81,6 @@ export function ThemePicker({ style, showDescription = true }: ThemePickerProps)
                   {
                     backgroundColor: colors.card,
                     borderColor: colors.border,
-                    shadowColor: colors.foreground,
                   },
                 ],
                 pressed && styles.pressed,
@@ -134,10 +133,7 @@ const styles = StyleSheet.create({
   },
   segmentItemSelected: {
     borderWidth: 1,
-    elevation: 2,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
+    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.10)',
   },
   segmentIcon: {
     fontSize: 16,
@@ -154,4 +150,3 @@ const styles = StyleSheet.create({
     opacity: 0.75,
   },
 });
-

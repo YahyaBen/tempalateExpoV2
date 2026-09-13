@@ -17,70 +17,14 @@ import type { ThemeMode } from "./theme.constant";
 /* ── Shadow Tokens ── */
 
 interface ShadowStyle {
-  readonly shadowColor: string;
-  readonly shadowOffset: { readonly width: number; readonly height: number };
-  readonly shadowOpacity: number;
-  readonly shadowRadius: number;
-  readonly elevation: number;
+  readonly boxShadow: string;
 }
 
 export const SHADOWS = {
-  none: {
-    shadowColor: "#000000",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0,
-    shadowRadius: 0,
-    elevation: 0,
-  },
-  xs: {
-    shadowColor: "#000000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 1,
-  },
-  sm: {
-    shadowColor: "#000000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    elevation: 2,
-  },
-  md: {
-    shadowColor: "#000000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.12,
-    shadowRadius: 12,
-    elevation: 4,
-  },
-  lg: {
-    shadowColor: "#000000",
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.12,
-    shadowRadius: 16,
-    elevation: 6,
-  },
-  xl: {
-    shadowColor: "#000000",
-    shadowOffset: { width: 0, height: 12 },
-    shadowOpacity: 0.16,
-    shadowRadius: 24,
-    elevation: 8,
-  },
-  "2xl": {
-    shadowColor: "#000000",
-    shadowOffset: { width: 0, height: 16 },
-    shadowOpacity: 0.2,
-    shadowRadius: 32,
-    elevation: 12,
-  },
-  floating: {
-    shadowColor: "#000000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    elevation: 4,
-  },
+  none: { boxShadow: "none" },
+  sm: { boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)" },
+  lg: { boxShadow: "0 8px 16px rgba(0, 0, 0, 0.12)" },
+  floating: { boxShadow: "0 4px 8px rgba(0, 0, 0, 0.15)" },
 } as const satisfies Record<string, ShadowStyle>;
 
 export type ShadowLevel = keyof typeof SHADOWS;
@@ -598,21 +542,15 @@ function createThemeTokens(
     iconSize: ICON_SIZE,
     touchTargetSize: TOUCH_TARGET_SIZE,
     shadows: {
-      item: {
-        ...SHADOWS.sm,
-        shadowOpacity: isDark ? 0.3 : SHADOWS.sm.shadowOpacity,
-        elevation: isDark ? 3 : SHADOWS.sm.elevation,
-      },
-      card: {
-        ...SHADOWS.lg,
-        shadowOpacity: isDark ? 0.4 : SHADOWS.lg.shadowOpacity,
-        elevation: isDark ? 8 : SHADOWS.lg.elevation,
-      },
-      floatingAction: {
-        ...SHADOWS.floating,
-        shadowOpacity: isDark ? 0.45 : SHADOWS.floating.shadowOpacity,
-        elevation: isDark ? 6 : SHADOWS.floating.elevation,
-      },
+      item: isDark
+        ? { boxShadow: "0 2px 8px rgba(0, 0, 0, 0.30)" }
+        : SHADOWS.sm,
+      card: isDark
+        ? { boxShadow: "0 8px 16px rgba(0, 0, 0, 0.40)" }
+        : SHADOWS.lg,
+      floatingAction: isDark
+        ? { boxShadow: "0 4px 8px rgba(0, 0, 0, 0.45)" }
+        : SHADOWS.floating,
     },
     components: {
       brandMark: COMPONENT_TOKENS.brandMark,

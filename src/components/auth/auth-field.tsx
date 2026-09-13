@@ -53,6 +53,7 @@ export function AuthField({ label, error, containerStyle, secureTextEntry, ...pr
         }}>
         <TextInput
           {...props}
+          accessibilityLabel={props.accessibilityLabel ?? label}
           secureTextEntry={isSecure}
           onFocus={(event) => {
             setFocused(true);

@@ -38,10 +38,6 @@ export default function AppTabs() {
           renderingMode="template"
         />
       </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="ui-kit">
-        <NativeTabs.Trigger.Label>UI Kit</NativeTabs.Trigger.Label>
-        <NativeTabs.Trigger.Icon sf="square.grid.2x2" md="widgets" />
-      </NativeTabs.Trigger>
     </NativeTabs>
   );
 }

@@ -28,7 +28,6 @@ export const ThemeContext = createContext<ThemeContextType | null>(null);
 export function ThemePreferenceProvider({ children }: { children: ReactNode }) {
   const systemScheme = useRNColorScheme();
   const [preference, setPreferenceState] = useState<ThemePreference>(THEME_PREFERENCE.SYSTEM);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   // Load persisted theme preference from storage on mount
   useEffect(() => {
@@ -57,10 +56,6 @@ export function ThemePreferenceProvider({ children }: { children: ReactNode }) {
         }
       } catch {
         // Fallback to default
-      } finally {
-        if (isMounted) {
-          setIsLoaded(true);
-        }
       }
     }
 
