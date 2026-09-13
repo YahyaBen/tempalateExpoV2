@@ -1,10 +1,12 @@
-import i18n from 'i18next';
+import { createInstance } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 import { DEFAULT_LANGUAGE } from '@/constants/language.constant';
 import ar from '@/shared/locales/ar.json';
 import en from '@/shared/locales/en.json';
 import fr from '@/shared/locales/fr.json';
+
+const i18n = createInstance();
 
 void i18n.use(initReactI18next).init({
   resources: {

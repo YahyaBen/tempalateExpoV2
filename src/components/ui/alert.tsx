@@ -1,5 +1,6 @@
 import { BottomSheet, Button, Column, Host, Row, Text } from '@expo/ui';
 
+import { fillWidthModifiers, fillWidthStyle } from '@/components/ui/universal-layout';
 import { useLanguage } from '@/context/language-context';
 import { useThemePreference } from '@/context/theme-context';
 import { useThemeTokens } from '@/hooks/use-theme';
@@ -11,11 +12,11 @@ export interface AlertAction {
 }
 
 export interface AlertDialogProps {
-  isPresented: boolean;
-  title: string;
-  message?: string;
-  actions?: AlertAction[];
-  onDismiss: () => void;
+  readonly isPresented: boolean;
+  readonly title: string;
+  readonly message?: string;
+  readonly actions?: AlertAction[];
+  readonly onDismiss: () => void;
 }
 
 export function AlertDialog({
@@ -95,12 +96,12 @@ export function AlertDialog({
 export type AlertBannerVariant = 'info' | 'success' | 'warning' | 'destructive';
 
 export interface AlertBannerProps {
-  title?: string;
-  description: string;
-  variant?: AlertBannerVariant;
-  action?: {
-    label: string;
-    onPress: () => void;
+  readonly title?: string;
+  readonly description: string;
+  readonly variant?: AlertBannerVariant;
+  readonly action?: {
+  readonly label: string;
+  readonly onPress: () => void;
   };
 }
 
@@ -129,14 +130,14 @@ export function AlertBanner({
       <Column
         spacing={theme.space(2)}
         alignment={isRTL ? 'end' : 'start'}
-        style={{
-          width: '100%',
+        modifiers={fillWidthModifiers}
+        style={fillWidthStyle({
           padding: theme.space(3.5),
           borderRadius: theme.radius.large,
           borderWidth: theme.borderWidth.small,
           borderColor,
           backgroundColor: theme.colors.content2,
-        }}>
+        })}>
         {title ? (
           <Text
             textStyle={{

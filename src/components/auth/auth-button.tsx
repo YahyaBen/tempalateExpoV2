@@ -1,6 +1,9 @@
-import { Pressable, Text, type StyleProp, type ViewStyle } from 'react-native';
+import { Button, Text, type UniversalStyle } from '@expo/ui';
 
-import { useLanguage } from '@/context/language-context';
+import {
+  fillWidthModifiers,
+  fillWidthStyle,
+} from '@/components/ui/universal-layout';
 import { useThemeTokens } from '@/hooks/use-theme';
 
 export function AuthButton({
@@ -14,41 +17,32 @@ export function AuthButton({
   onPress?: () => void;
   disabled?: boolean;
   variant?: 'primary' | 'secondary';
-  style?: StyleProp<ViewStyle>;
+  style?: UniversalStyle;
 }) {
-  const { direction } = useLanguage();
   const theme = useThemeTokens();
   const primary = variant === 'primary';
 
   return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={label}
-      accessibilityState={{ disabled }}
+    <Button
+      variant="filled"
       disabled={disabled}
       onPress={onPress}
-      style={({ pressed }) => [
-        {
-          minHeight: theme.controlHeight.lg,
-          alignItems: 'center',
-          justifyContent: 'center',
-          borderRadius: theme.radius.xlarge,
-          borderCurve: 'continuous',
-          backgroundColor: primary ? theme.colors.primary : theme.colors.content2,
-          opacity: disabled ? theme.opacity.disabled : pressed ? theme.opacity.pressed : 1,
-        },
-        style,
-      ]}>
+      modifiers={fillWidthModifiers}
+      style={fillWidthStyle({
+        height: theme.controlHeight.lg,
+        paddingHorizontal: theme.space(5.5),
+        borderRadius: theme.radius.xlarge,
+        backgroundColor: primary ? theme.colors.primary : theme.colors.content2,
+        opacity: disabled ? theme.opacity.disabled : 1,
+        ...style,
+      })}>
       <Text
-        style={[
-          theme.typography.semantic.button,
-          {
-            color: primary ? theme.colors.primaryForeground : theme.colors.foreground,
-            writingDirection: direction,
-          },
-        ]}>
+        textStyle={{
+          ...theme.typography.semantic.button,
+          color: primary ? theme.colors.primaryForeground : theme.colors.foreground,
+        }}>
         {label}
       </Text>
-    </Pressable>
+    </Button>
   );
 }

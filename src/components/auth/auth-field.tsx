@@ -1,114 +1,130 @@
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
-  Pressable,
+  Button,
+  Column,
+  Row,
+  Spacer,
   Text,
   TextInput,
-  View,
-  type StyleProp,
+  useNativeState,
   type TextInputProps,
-  type ViewStyle,
-} from 'react-native';
+  type UniversalStyle,
+} from '@expo/ui';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
+import {
+  fillWidthModifiers,
+  fillWidthStyle,
+} from '@/components/ui/universal-layout';
 import { useLanguage } from '@/context/language-context';
 import { useThemeTokens } from '@/hooks/use-theme';
 
-type AuthFieldProps = Omit<TextInputProps, 'style' | 'placeholderTextColor'> & {
+type AuthFieldProps = Omit<TextInputProps, 'value' | 'style' | 'textStyle'> & {
   label: string;
+  value?: string;
   error?: string;
-  containerStyle?: StyleProp<ViewStyle>;
+  containerStyle?: UniversalStyle;
 };
 
-export function AuthField({ label, error, containerStyle, secureTextEntry, ...props }: AuthFieldProps) {
+export function AuthField({
+  label,
+  value = '',
+  error,
+  containerStyle,
+  secureTextEntry,
+  onChangeText,
+  onFocus,
+  onBlur,
+  ...props
+}: AuthFieldProps) {
   const { t } = useTranslation();
-  const { direction, isRTL } = useLanguage();
+  const { isRTL } = useLanguage();
   const theme = useThemeTokens();
+  const nativeValue = useNativeState(value);
   const [focused, setFocused] = useState(false);
-  const [isSecure, setIsSecure] = useState(secureTextEntry);
+  const [isSecure, setIsSecure] = useState(Boolean(secureTextEntry));
 
   return (
-    <View style={[{ gap: theme.space(2) }, containerStyle]}>
-      <Text
-        style={[
-          theme.typography.semantic.label,
-          {
+    <Column
+      spacing={theme.space(2)}
+      alignment={isRTL ? 'end' : 'start'}
+      modifiers={fillWidthModifiers}
+      style={fillWidthStyle(containerStyle)}>
+      <Row alignment="center" modifiers={fillWidthModifiers} style={fillWidthStyle()}>
+        <Text
+          textStyle={{
+            ...theme.typography.semantic.label,
             color: theme.colors.foreground,
             textAlign: isRTL ? 'right' : 'left',
-            writingDirection: direction,
-          },
-        ]}>
-        {label}
-      </Text>
-      <View
-        style={{
-          minHeight: theme.controlHeight.lg,
-          flexDirection: 'row',
-          alignItems: 'center',
-          backgroundColor: theme.colors.content2,
-          borderColor: error ? theme.colors.destructive : focused ? theme.colors.primary : 'transparent',
-          borderWidth: theme.components.textInput.borderWidth,
-          borderRadius: theme.radius.xlarge,
-          borderCurve: 'continuous',
-          paddingHorizontal: theme.space(4),
-        }}>
-        <TextInput
-          {...props}
-          accessibilityLabel={props.accessibilityLabel ?? label}
-          secureTextEntry={isSecure}
-          onFocus={(event) => {
-            setFocused(true);
-            props.onFocus?.(event);
-          }}
-          onBlur={(event) => {
-            setFocused(false);
-            props.onBlur?.(event);
-          }}
-          placeholderTextColor={theme.colors.mutedForeground}
-          cursorColor={theme.colors.primary}
-          selectionColor={theme.colors.primary}
-          style={{
-            flex: 1,
-            minHeight: theme.components.textInput.contentHeight,
-            color: theme.colors.foreground,
-            ...theme.typography.semantic.body,
-            textAlign: isRTL ? 'right' : 'left',
-            writingDirection: direction,
-            paddingVertical: 0,
-          }}
-        />
+          }}>
+          {label}
+        </Text>
         {secureTextEntry ? (
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={isSecure ? t('auth.showPassword') : t('auth.hidePassword')}
-            hitSlop={theme.space(2.5)}
-            onPress={() => setIsSecure((current) => !current)}>
-            {({ pressed }) => (
+          <>
+            <Spacer flexible />
+            <Button
+              variant="text"
+              label={isSecure ? t('auth.showPassword') : t('auth.hidePassword')}
+              onPress={() => setIsSecure((current) => !current)}>
               <Text
-                style={[
-                  theme.typography.semantic.link,
-                  { color: theme.colors.primary, opacity: pressed ? theme.opacity.pressed : 1 },
-                ]}>
+                textStyle={{
+                  ...theme.typography.semantic.link,
+                  color: theme.colors.primary,
+                }}>
                 {isSecure ? t('auth.show') : t('auth.hide')}
               </Text>
-            )}
-          </Pressable>
+            </Button>
+          </>
         ) : null}
-      </View>
+      </Row>
+
+      <TextInput
+        {...props}
+        value={nativeValue}
+        secureTextEntry={isSecure}
+        onChangeText={onChangeText}
+        onFocus={() => {
+          setFocused(true);
+          onFocus?.();
+        }}
+        onBlur={() => {
+          setFocused(false);
+          onBlur?.();
+        }}
+        placeholderTextColor={theme.colors.mutedForeground}
+        cursorColor={theme.colors.primary}
+        selectionColor={theme.colors.primary}
+        textAlign={isRTL ? 'right' : 'left'}
+        modifiers={fillWidthModifiers}
+        style={fillWidthStyle({
+          height: theme.controlHeight.lg,
+          paddingHorizontal: theme.space(4),
+          backgroundColor: theme.colors.content2,
+          borderColor: error
+            ? theme.colors.destructive
+            : focused
+              ? theme.colors.primary
+              : theme.colors.border,
+          borderWidth: theme.components.textInput.borderWidth,
+          borderRadius: theme.radius.xlarge,
+        })}
+        textStyle={{
+          ...theme.typography.semantic.body,
+          color: theme.colors.foreground,
+          textAlign: isRTL ? 'right' : 'left',
+        }}
+      />
+
       {error ? (
         <Text
-          selectable
-          accessibilityLiveRegion="polite"
-          style={[
-            theme.typography.semantic.caption,
-            {
-              color: theme.colors.destructive,
-              textAlign: isRTL ? 'right' : 'left',
-              writingDirection: direction,
-            },
-          ]}>
+          textStyle={{
+            ...theme.typography.semantic.caption,
+            color: theme.colors.destructive,
+            textAlign: isRTL ? 'right' : 'left',
+          }}>
           {error}
         </Text>
       ) : null}
-    </View>
+    </Column>
   );
 }

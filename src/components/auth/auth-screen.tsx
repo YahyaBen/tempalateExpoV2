@@ -1,9 +1,15 @@
+import { Column, Row, Spacer, Text } from '@expo/ui';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { KeyboardAvoidingView, ScrollView, Text, View } from 'react-native';
+import { KeyboardAvoidingView, ScrollView } from 'react-native';
 
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { ThemeSwitch } from '@/components/theme-switch';
+import { UniversalHost } from '@/components/ui/universal-host';
+import {
+  fillWidthModifiers,
+  fillWidthStyle,
+} from '@/components/ui/universal-layout';
 import { useLanguage } from '@/context/language-context';
 import { useThemeTokens } from '@/hooks/use-theme';
 
@@ -21,10 +27,8 @@ export function AuthScreen({
   const { t } = useTranslation();
   const { direction, isRTL } = useLanguage();
   const theme = useThemeTokens();
-  const textDirection = {
-    textAlign: isRTL ? ('right' as const) : ('left' as const),
-    writingDirection: direction,
-  };
+  const alignment = isRTL ? ('end' as const) : ('start' as const);
+  const textAlign = isRTL ? ('right' as const) : ('left' as const);
 
   return (
     <KeyboardAvoidingView
@@ -38,77 +42,98 @@ export function AuthScreen({
           paddingHorizontal: theme.space(6),
           paddingBottom: theme.space(8),
         }}>
-        <View
+        <UniversalHost
+          matchContents={{ vertical: true }}
           style={{
-            flex: 1,
             width: '100%',
             maxWidth: theme.contentWidth.compact,
             alignSelf: 'center',
-            gap: theme.space(7),
           }}>
-          <View style={{ paddingTop: theme.space(4), gap: theme.space(3) }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: theme.space(3),
-              }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.space(2.5) }}>
-                <View
-                  style={{
-                    width: theme.components.brandMark.size,
-                    height: theme.components.brandMark.size,
-                    borderRadius: theme.components.brandMark.radius,
-                    borderCurve: 'continuous',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundColor: theme.colors.primary,
-                  }}>
-                  <Text style={[theme.components.brandMark.letter, { color: theme.colors.primaryForeground }]}>
-                    {t('common.appInitial')}
+          <Column
+            spacing={theme.space(7)}
+            alignment={alignment}
+            modifiers={fillWidthModifiers}
+            style={fillWidthStyle()}>
+            <Column
+              spacing={theme.space(3)}
+              alignment={alignment}
+              modifiers={fillWidthModifiers}
+              style={fillWidthStyle()}>
+              <Row alignment="center" modifiers={fillWidthModifiers} style={fillWidthStyle()}>
+                <Row spacing={theme.space(2.5)} alignment="center">
+                  <Column
+                    alignment="center"
+                    style={{
+                      width: theme.components.brandMark.size,
+                      height: theme.components.brandMark.size,
+                      borderRadius: theme.components.brandMark.radius,
+                      backgroundColor: theme.colors.primary,
+                    }}>
+                    <Spacer flexible />
+                    <Text
+                      textStyle={{
+                        ...theme.components.brandMark.letter,
+                        color: theme.colors.primaryForeground,
+                      }}>
+                      {t('common.appInitial')}
+                    </Text>
+                    <Spacer flexible />
+                  </Column>
+                  <Text
+                    textStyle={{
+                      ...theme.typography.semantic.heading,
+                      color: theme.colors.foreground,
+                      letterSpacing: theme.letterSpacing.brand,
+                    }}>
+                    {t('common.appName')}
                   </Text>
-                </View>
+                </Row>
+                <Spacer flexible />
+                <Row spacing={theme.space(2)} alignment="center">
+                  <LanguageSwitcher />
+                  <ThemeSwitch />
+                </Row>
+              </Row>
+
+              <Column
+                spacing={theme.space(1.5)}
+                alignment={alignment}
+                modifiers={fillWidthModifiers}
+                style={fillWidthStyle()}>
                 <Text
-                  style={[
-                    theme.typography.semantic.heading,
-                    { color: theme.colors.foreground, letterSpacing: theme.letterSpacing.brand },
-                  ]}>
-                  {t('common.appName')}
-                </Text>
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.space(2) }}>
-                <LanguageSwitcher />
-                <ThemeSwitch />
-              </View>
-            </View>
-            <View style={{ gap: theme.space(1.5) }}>
-              <Text
-                style={[
-                  theme.typography.semantic.overline,
-                  {
+                  textStyle={{
+                    ...theme.typography.semantic.overline,
                     color: theme.colors.primary,
                     letterSpacing: theme.letterSpacing.overline,
-                    ...textDirection,
-                  },
-                ]}>
-                {eyebrow}
-              </Text>
-              <Text
-                selectable
-                style={[
-                  theme.typography.semantic.body,
-                  { color: theme.colors.mutedForeground, ...textDirection },
-                ]}>
-                {description}
-              </Text>
-            </View>
-          </View>
+                    textAlign,
+                  }}>
+                  {eyebrow}
+                </Text>
+                <Text
+                  textStyle={{
+                    ...theme.typography.semantic.body,
+                    color: theme.colors.mutedForeground,
+                    textAlign,
+                  }}>
+                  {description}
+                </Text>
+              </Column>
+            </Column>
 
-          <View style={{ gap: theme.space(5) }}>{children}</View>
-          {footer ? <View style={{ paddingTop: theme.space(1) }}>{footer}</View> : null}
-        </View>
+            <Column
+              spacing={theme.space(5)}
+              alignment={alignment}
+              modifiers={fillWidthModifiers}
+              style={fillWidthStyle()}>
+              {children}
+            </Column>
+            {footer ? (
+              <Column modifiers={fillWidthModifiers} style={fillWidthStyle()}>
+                {footer}
+              </Column>
+            ) : null}
+          </Column>
+        </UniversalHost>
       </ScrollView>
     </KeyboardAvoidingView>
   );

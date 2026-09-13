@@ -1,56 +1,54 @@
-import { Pressable, Text, View } from 'react-native';
+import { Button, Row, Text } from '@expo/ui';
 
-import { useLanguage } from '@/context/language-context';
+import {
+  fillWidthModifiers,
+  fillWidthStyle,
+} from '@/components/ui/universal-layout';
 import { useThemeTokens } from '@/hooks/use-theme';
 
-export function GoogleButton({ label, onPress }: { label: string; onPress?: () => void }) {
-  const { direction } = useLanguage();
+export function GoogleButton({
+  label,
+  onPress,
+  disabled = false,
+}: {
+  label: string;
+  onPress?: () => void;
+  disabled?: boolean;
+}) {
   const theme = useThemeTokens();
 
   return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={label}
+    <Button
+      variant="outlined"
+      disabled={disabled}
       onPress={onPress}
-      style={({ pressed }) => ({
-        minHeight: theme.controlHeight.lg,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: theme.space(3),
+      modifiers={fillWidthModifiers}
+      style={fillWidthStyle({
+        height: theme.controlHeight.lg,
+        paddingHorizontal: theme.space(4),
         borderRadius: theme.radius.xlarge,
-        borderCurve: 'continuous',
         borderWidth: theme.components.button.borderWidth,
         borderColor: theme.colors.border,
         backgroundColor: theme.colors.card,
-        opacity: pressed ? theme.opacity.pressed : 1,
+        opacity: disabled ? theme.opacity.disabled : 1,
       })}>
-      <View
-        style={{
-          width: theme.components.googleButton.iconSize,
-          height: theme.components.googleButton.iconSize,
-          borderRadius: theme.components.googleButton.iconRadius,
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: theme.components.googleButton.color.iconBackground,
-          borderWidth: theme.components.googleButton.iconBorderWidth,
-          borderColor: theme.components.googleButton.color.iconBorder,
-        }}>
+      <Row spacing={theme.space(3)} alignment="center">
         <Text
-          style={[
-            theme.typography.semantic.subhead,
-            { color: theme.components.googleButton.color.glyph, fontWeight: theme.typography.semantic.button.fontWeight },
-          ]}>
+          textStyle={{
+            ...theme.typography.semantic.subhead,
+            color: theme.components.googleButton.color.glyph,
+            fontWeight: '700',
+          }}>
           G
         </Text>
-      </View>
-      <Text
-        style={[
-          theme.typography.semantic.label,
-          { color: theme.colors.foreground, writingDirection: direction },
-        ]}>
-        {label}
-      </Text>
-    </Pressable>
+        <Text
+          textStyle={{
+            ...theme.typography.semantic.label,
+            color: theme.colors.foreground,
+          }}>
+          {label}
+        </Text>
+      </Row>
+    </Button>
   );
 }
