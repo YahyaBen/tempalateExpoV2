@@ -1,98 +1,142 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Link, useLocalSearchParams } from 'expo-router';
+import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { Pressable, Text, View } from 'react-native';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import { AuthButton } from '@/components/auth/auth-button';
+import { AuthField } from '@/components/auth/auth-field';
+import { AuthScreen } from '@/components/auth/auth-screen';
+import { GoogleButton } from '@/components/auth/google-button';
+import { useThemeTokens } from '@/hooks/use-theme';
+import { loginSchema, type LoginFormValues } from '@/resolvers/login.resolver';
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
+export default function LoginScreen() {
+  const { t } = useTranslation();
+  const { registered, reset } = useLocalSearchParams<{ registered?: string; reset?: string }>();
+  const theme = useThemeTokens();
+
+  const noticeKey = registered
+    ? 'auth.accountReady'
+    : reset
+      ? 'auth.passwordUpdatedSignIn'
+      : '';
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { login: '', password: '' },
+  });
+
+  function onSubmit(_data: LoginFormValues) {
+    // TODO: call login mutation with _data
   }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
+
   return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
+    <AuthScreen
+      eyebrow={t('auth.loginEyebrow')}
+      description={t('auth.loginDescription')}
+      footer={
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: theme.space(1),
+          }}>
+          <Text style={{ color: theme.colors.mutedForeground }}>{t('auth.noAccount')}</Text>
+          <Link href="/register" asChild>
+            <Pressable accessibilityRole="link" hitSlop={theme.space(2)}>
+              {({ pressed }) => (
+                <Text
+                  style={[
+                    theme.typography.semantic.link,
+                    { color: theme.colors.primary, opacity: pressed ? theme.opacity.pressed : 1 },
+                  ]}>
+                  {t('auth.signUp')}
+                </Text>
+              )}
+            </Pressable>
+          </Link>
+        </View>
+      }>
+      <GoogleButton label={t('auth.continueWithGoogle')} onPress={() => undefined} />
+
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.space(3) }}>
+        <View style={{ flex: 1, height: theme.borderWidth.small, backgroundColor: theme.colors.divider }} />
+        <Text style={[theme.typography.semantic.caption, { color: theme.colors.mutedForeground }]}>
+          {t('auth.continueWithEmail')}
+        </Text>
+        <View style={{ flex: 1, height: theme.borderWidth.small, backgroundColor: theme.colors.divider }} />
+      </View>
+
+      <View style={{ gap: theme.space(4) }}>
+        <Controller
+          control={control}
+          name="login"
+          render={({ field: { value, onChange, onBlur } }) => (
+            <AuthField
+              label={t('auth.identity')}
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              error={errors.login ? t(errors.login.message!) : undefined}
+              autoCapitalize="none"
+              autoComplete="username"
+              returnKeyType="next"
+              placeholder={t('auth.emailPlaceholder')}
+            />
+          )}
+        />
+
+        <View style={{ gap: theme.space(2) }}>
+          <Controller
+            control={control}
+            name="password"
+            render={({ field: { value, onChange, onBlur } }) => (
+              <AuthField
+                label={t('auth.password')}
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                error={errors.password ? t(errors.password.message!) : undefined}
+                secureTextEntry
+                autoComplete="current-password"
+                returnKeyType="done"
+                onSubmitEditing={handleSubmit(onSubmit)}
+                placeholder={t('auth.passwordPlaceholder')}
+              />
+            )}
+          />
+          <Link href="/forgot-password" asChild>
+            <Pressable accessibilityRole="link" hitSlop={theme.space(2)} style={{ alignSelf: 'flex-end' }}>
+              {({ pressed }) => (
+                <Text
+                  style={[
+                    theme.typography.semantic.link,
+                    { color: theme.colors.primary, opacity: pressed ? theme.opacity.pressed : 1 },
+                  ]}>
+                  {t('auth.forgotPassword')}
+                </Text>
+              )}
+            </Pressable>
+          </Link>
+        </View>
+      </View>
+
+      {noticeKey ? (
+        <Text
+          selectable
+          accessibilityLiveRegion="polite"
+          style={[theme.typography.semantic.label, { color: theme.colors.success }]}>
+          {t(noticeKey)}
+        </Text>
+      ) : null}
+
+      <AuthButton label={t('auth.signIn')} onPress={handleSubmit(onSubmit)} />
+    </AuthScreen>
   );
 }
-
-export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
-
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
-
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
-  },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
-  },
-  title: {
-    textAlign: 'center',
-  },
-  code: {
-    textTransform: 'uppercase',
-  },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
-  },
-});

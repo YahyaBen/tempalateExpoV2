@@ -4,18 +4,17 @@ import { Platform, Pressable, ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ExternalLink } from '@/components/external-link';
+import { ThemePicker } from '@/components/theme-picker';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Collapsible } from '@/components/ui/collapsible';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 export default function TabTwoScreen() {
   const safeAreaInsets = useSafeAreaInsets();
   const insets = {
     ...safeAreaInsets,
-    bottom: safeAreaInsets.bottom + BottomTabInset + Spacing.three,
+    bottom: safeAreaInsets.bottom
   };
   const theme = useTheme();
 
@@ -25,11 +24,7 @@ export default function TabTwoScreen() {
       paddingLeft: insets.left,
       paddingRight: insets.right,
       paddingBottom: insets.bottom,
-    },
-    web: {
-      paddingTop: Spacing.six,
-      paddingBottom: Spacing.four,
-    },
+    }
   });
 
   return (
@@ -105,6 +100,7 @@ export default function TabTwoScreen() {
               <ThemedText type="code">useColorScheme()</ThemedText> hook lets you inspect what the
               user&apos;s current color scheme is, and so you can adjust UI colors accordingly.
             </ThemedText>
+            <ThemePicker style={{ marginVertical: 12 }} />
             <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
               <ThemedText type="linkPrimary">Learn more</ThemedText>
             </ExternalLink>
@@ -119,8 +115,7 @@ export default function TabTwoScreen() {
             </ThemedText>
           </Collapsible>
         </ThemedView>
-        {Platform.OS === 'web' && <WebBadge />}
-      </ThemedView>
+       </ThemedView>
     </ScrollView>
   );
 }
@@ -134,14 +129,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   container: {
-    maxWidth: MaxContentWidth,
     flexGrow: 1,
   },
   titleContainer: {
-    gap: Spacing.three,
+    gap: 12,
     alignItems: 'center',
-    paddingHorizontal: Spacing.four,
-    paddingVertical: Spacing.six,
+    paddingHorizontal: 16,
+    paddingVertical: 24,
   },
   centerText: {
     textAlign: 'center',
@@ -151,17 +145,17 @@ const styles = StyleSheet.create({
   },
   linkButton: {
     flexDirection: 'row',
-    paddingHorizontal: Spacing.four,
-    paddingVertical: Spacing.two,
-    borderRadius: Spacing.five,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
     justifyContent: 'center',
-    gap: Spacing.one,
+    gap: 8,
     alignItems: 'center',
   },
   sectionsWrapper: {
-    gap: Spacing.five,
-    paddingHorizontal: Spacing.four,
-    paddingTop: Spacing.three,
+    gap: 20,
+    paddingHorizontal: 16,
+    paddingTop: 24,
   },
   collapsibleContent: {
     alignItems: 'center',
@@ -169,8 +163,8 @@ const styles = StyleSheet.create({
   imageTutorial: {
     width: '100%',
     aspectRatio: 296 / 171,
-    borderRadius: Spacing.three,
-    marginTop: Spacing.two,
+    borderRadius: 6,
+    marginTop: 8,
   },
   imageReact: {
     width: 100,
