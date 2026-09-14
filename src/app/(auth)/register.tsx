@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { Column, Row, Spacer, Text } from '@expo/ui';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -12,9 +11,13 @@ import { AuthScreen } from '@/components/auth/auth-screen';
 import { GoogleButton } from '@/components/auth/google-button';
 import { OtpSheet } from '@/components/auth/otp-sheet';
 import {
+  Column,
   fillWidthModifiers,
   fillWidthStyle,
-} from '@/components/ui/universal-layout';
+  Row,
+  Spacer,
+  Text,
+} from '@/components/ui/universal';
 import { useLanguage } from '@/context/language-context';
 import { useThemeTokens } from '@/hooks/use-theme';
 import { registerSchema, type RegisterFormValues } from '@/resolvers/register.resolver';
@@ -163,7 +166,7 @@ export default function RegisterScreen() {
           modifiers={fillWidthModifiers}
           style={fillWidthStyle()}>
           <Spacer flexible />
-          <Text textStyle={{ ...theme.typography.semantic.caption, color: theme.colors.mutedForeground }}>
+          <Text semantic="muted" textStyle={theme.typography.semantic.caption}>
             {t('auth.useEmail')}
           </Text>
           <Spacer flexible />
@@ -291,9 +294,9 @@ export default function RegisterScreen() {
         />
 
         <Text
+          semantic="muted"
           textStyle={{
             ...theme.typography.semantic.legal,
-            color: theme.colors.mutedForeground,
             textAlign: 'center',
           }}>
           {t('auth.termsNotice')}

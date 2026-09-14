@@ -1,5 +1,4 @@
-import { Text } from '@expo/ui';
-
+import { Text } from '@/components/ui/universal';
 import { useLanguage } from '@/context/language-context';
 import { useThemeTokens } from '@/hooks/use-theme';
 
@@ -11,9 +10,9 @@ export function AuthErrorMessage({ message }: { message?: string | string[] | nu
 
   return (
     <Text
+      semantic="destructive"
       textStyle={{
         ...theme.typography.semantic.label,
-        color: theme.colors.destructive,
         textAlign: isRTL ? 'right' : 'left',
       }}>
       {Array.isArray(message) ? message.join('\n') : message}

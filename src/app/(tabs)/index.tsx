@@ -1,10 +1,15 @@
-import { Column, Spacer, Text } from '@expo/ui';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { AuthButton } from '@/components/auth/auth-button';
-import { UniversalHost } from '@/components/ui/universal-host';
-import { fillSizeModifiers, fillSizeStyle } from '@/components/ui/universal-layout';
+import {
+  Column,
+  fillSizeModifiers,
+  fillSizeStyle,
+  Spacer,
+  Text,
+  UniversalHost,
+} from '@/components/ui/universal';
 import { useAuthContext } from '@/context/auth.context';
 import { useThemeTokens } from '@/hooks/use-theme';
 import { authService } from '@/services/auth/auth.service';
@@ -38,16 +43,15 @@ export default function HomeScreen() {
         <Text
           textStyle={{
             ...theme.typography.semantic.display,
-            color: theme.colors.foreground,
             textAlign: 'center',
           }}>
           {t('auth.welcomeBack')}
         </Text>
         {session?.user?.email ? (
           <Text
+            semantic="muted"
             textStyle={{
               ...theme.typography.semantic.body,
-              color: theme.colors.mutedForeground,
               textAlign: 'center',
             }}>
             {session.user.email}

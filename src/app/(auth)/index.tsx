@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { Button, Column, Row, Spacer, Text } from '@expo/ui';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -13,9 +12,14 @@ import { AuthScreen } from '@/components/auth/auth-screen';
 import { GoogleButton } from '@/components/auth/google-button';
 import { OtpSheet } from '@/components/auth/otp-sheet';
 import {
+  Button,
+  Column,
   fillWidthModifiers,
   fillWidthStyle,
-} from '@/components/ui/universal-layout';
+  Row,
+  Spacer,
+  Text,
+} from '@/components/ui/universal';
 import { useThemeTokens } from '@/hooks/use-theme';
 import { loginSchema, type LoginFormValues } from '@/resolvers/login.resolver';
 import { getApiErrorMessage } from '@/services/api.error';
@@ -151,7 +155,7 @@ export default function LoginScreen() {
       footer={
         <Row spacing={theme.space(1)} alignment="center">
           <Spacer flexible />
-          <Text textStyle={{ color: theme.colors.mutedForeground }}>
+          <Text semantic="muted">
             {t('auth.noAccount')}
           </Text>
           <Button
@@ -174,7 +178,7 @@ export default function LoginScreen() {
         modifiers={fillWidthModifiers}
         style={fillWidthStyle()}>
         <Spacer flexible />
-        <Text textStyle={{ ...theme.typography.semantic.caption, color: theme.colors.mutedForeground }}>
+        <Text semantic="muted" textStyle={theme.typography.semantic.caption}>
           {t('auth.continueWithEmail')}
         </Text>
         <Spacer flexible />
@@ -235,7 +239,8 @@ export default function LoginScreen() {
 
       {noticeKey ? (
         <Text
-          textStyle={{ ...theme.typography.semantic.label, color: theme.colors.success }}>
+          semantic="success"
+          textStyle={theme.typography.semantic.label}>
           {t(noticeKey)}
         </Text>
       ) : null}

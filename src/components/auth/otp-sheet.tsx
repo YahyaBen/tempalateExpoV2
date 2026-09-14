@@ -1,12 +1,17 @@
-import { BottomSheet, Button, Column, Text, TextInput, useNativeState, type TextInputRef } from '@expo/ui';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { UniversalHost } from '@/components/ui/universal-host';
 import {
+  BottomSheet,
+  Button,
+  Column,
   fillWidthModifiers,
   fillWidthStyle,
-} from '@/components/ui/universal-layout';
+  Text,
+  TextInput,
+  UniversalHost,
+  type TextInputRef,
+} from '@/components/ui/universal';
 import { useLanguage } from '@/context/language-context';
 import { useThemeTokens } from '@/hooks/use-theme';
 
@@ -35,7 +40,6 @@ export function OtpSheet({
   const { isRTL } = useLanguage();
   const theme = useThemeTokens();
   const inputRef = useRef<TextInputRef>(null);
-  const nativeCode = useNativeState('');
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
@@ -112,17 +116,17 @@ export function OtpSheet({
           style={fillWidthStyle({ paddingVertical: theme.space(2) })}>
           <Column spacing={theme.space(2)} alignment={isRTL ? 'end' : 'start'}>
             <Text
+              semantic="default"
               textStyle={{
                 ...theme.typography.semantic.title,
-                color: theme.colors.foreground,
                 textAlign,
               }}>
               {t('auth.recoveryEmailSentTitle')}
             </Text>
             <Text
+              semantic="muted"
               textStyle={{
                 ...theme.typography.semantic.subhead,
-                color: theme.colors.mutedForeground,
                 textAlign,
               }}>
               {t(
@@ -136,7 +140,8 @@ export function OtpSheet({
 
           <TextInput
             ref={inputRef}
-            value={nativeCode}
+            value={code}
+            error={error ? t(error) : apiError || undefined}
             onChangeText={(value) => {
               const nextCode = value.replace(/\D/g, '').slice(0, theme.components.otpInput.length);
               setCode(nextCode);
@@ -149,35 +154,22 @@ export function OtpSheet({
             autoComplete="one-time-code"
             maxLength={theme.components.otpInput.length}
             placeholder={t('auth.verificationCode')}
-            placeholderTextColor={theme.colors.mutedForeground}
-            cursorColor={theme.colors.primary}
-            selectionColor={theme.colors.primary}
             textAlign="center"
-            modifiers={fillWidthModifiers}
-            style={fillWidthStyle({
-              height: theme.controlHeight.lg,
-              paddingHorizontal: theme.space(4),
-              borderRadius: theme.radius.xlarge,
-              borderWidth: theme.components.otpInput.borderWidth,
-              borderColor: error ? theme.colors.destructive : theme.colors.primary,
-              backgroundColor: theme.colors.content2,
-            })}
             textStyle={{
               ...theme.typography.semantic.title,
-              color: theme.colors.foreground,
               textAlign: 'center',
               letterSpacing: theme.space(2),
             }}
           />
 
-          {error || apiError || notice ? (
+          {notice ? (
             <Text
+              semantic="success"
               textStyle={{
                 ...theme.typography.semantic.caption,
-                color: error || apiError ? theme.colors.destructive : theme.colors.success,
                 textAlign,
               }}>
-              {error ? t(error) : apiError || t(notice)}
+              {t(notice)}
             </Text>
           ) : null}
 
@@ -191,12 +183,7 @@ export function OtpSheet({
                 isVerifying || isResending || code.length !== theme.components.otpInput.length
               }
               onPress={() => void verify()}
-              modifiers={fillWidthModifiers}
-              style={fillWidthStyle({
-                height: theme.controlHeight.lg,
-                borderRadius: theme.radius.xlarge,
-                backgroundColor: theme.colors.primary,
-              })}
+              fullWidth
             />
             {onResend ? (
               <Button

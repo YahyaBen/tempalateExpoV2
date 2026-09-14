@@ -1,12 +1,18 @@
-import { BottomSheet, Button, Column, Icon, Row, Spacer, Text } from '@expo/ui';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { APP_LANGUAGE, type AppLanguage } from '@/constants/language.constant';
 import {
+  BottomSheet,
+  Button,
+  Column,
   fillWidthModifiers,
   fillWidthStyle,
-} from '@/components/ui/universal-layout';
+  Icon,
+  LANGUAGE_ICON,
+  Row,
+  Text
+} from '@/components/ui/universal';
+import { APP_LANGUAGE, type AppLanguage } from '@/constants/language.constant';
 import { useLanguage } from '@/context/language-context';
 import { useThemeTokens } from '@/hooks/use-theme';
 
@@ -16,11 +22,6 @@ interface LanguageOption {
   nativeName: string;
   flag: string;
 }
-
-const LANGUAGE_ICON = Icon.select({
-  ios: 'character.bubble.fill.zh',
-  android: import('@expo/material-symbols/translate.xml'),
-});
 
 export function LanguageSwitcher() {
   const { t } = useTranslation();
@@ -91,17 +92,17 @@ export function LanguageSwitcher() {
           style={fillWidthStyle()}>
           <Column spacing={theme.space(1)} alignment={isRTL ? 'end' : 'start'}>
             <Text
+              semantic="default"
               textStyle={{
                 ...theme.typography.semantic.title,
-                color: theme.colors.foreground,
                 textAlign: isRTL ? 'right' : 'left',
               }}>
               {t('common.selectLanguage')}
             </Text>
             <Text
+              semantic="muted"
               textStyle={{
                 ...theme.typography.semantic.caption,
-                color: theme.colors.mutedForeground,
                 textAlign: isRTL ? 'right' : 'left',
               }}>
               {t('profile.languageHint')}
@@ -117,16 +118,10 @@ export function LanguageSwitcher() {
               return (
                 <Button
                   key={item.code}
+                  fullWidth
                   variant={isSelected ? 'filled' : 'outlined'}
-                  onPress={() => void handleSelect(item.code)}
-                  modifiers={fillWidthModifiers}
-                  style={fillWidthStyle({
-                    paddingHorizontal: theme.space(4),
-                    paddingVertical: theme.space(3),
-                    borderRadius: theme.radius.xlarge,
-                    backgroundColor: isSelected ? theme.colors.primary : theme.colors.background,
-                    borderColor: isSelected ? theme.colors.primary : theme.colors.border,
-                  })}>
+                  semantic={isSelected ? 'primary' : undefined}
+                  onPress={() => void handleSelect(item.code)}>
                   <Row
                     spacing={theme.space(3)}
                     alignment="center"
@@ -156,17 +151,6 @@ export function LanguageSwitcher() {
                         {item.name}
                       </Text>
                     </Column>
-                    <Spacer flexible />
-                    {isSelected ? (
-                      <Text
-                        textStyle={{
-                          color: theme.colors.primaryForeground,
-                          fontSize: 18,
-                          fontWeight: '700',
-                        }}>
-                        ✓
-                      </Text>
-                    ) : null}
                   </Row>
                 </Button>
               );

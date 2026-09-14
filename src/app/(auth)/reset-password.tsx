@@ -10,7 +10,7 @@ import {
 import type { ResetPasswordRequest } from '@/types/auth.types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { Text } from '@expo/ui';
+import { Text } from '@/components/ui/universal';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -61,10 +61,8 @@ export default function ResetPasswordScreen() {
       description={t('auth.resetDescription')}>
       {params.email ? (
         <Text
-          textStyle={{
-            ...theme.typography.semantic.label,
-            color: theme.colors.mutedForeground,
-          }}>
+          semantic="muted"
+          textStyle={theme.typography.semantic.label}>
           {`${t('auth.resettingPasswordFor')} ${params.email}`}
         </Text>
       ) : null}

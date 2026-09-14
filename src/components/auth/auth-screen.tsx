@@ -1,15 +1,18 @@
-import { Column, Row, Spacer, Text } from '@expo/ui';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { KeyboardAvoidingView, ScrollView } from 'react-native';
 
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { ThemeSwitch } from '@/components/theme-switch';
-import { UniversalHost } from '@/components/ui/universal-host';
 import {
+  Column,
   fillWidthModifiers,
   fillWidthStyle,
-} from '@/components/ui/universal-layout';
+  Row,
+  Spacer,
+  Text,
+  UniversalHost,
+} from '@/components/ui/universal';
 import { useLanguage } from '@/context/language-context';
 import { useThemeTokens } from '@/hooks/use-theme';
 
@@ -82,7 +85,6 @@ export function AuthScreen({
                   <Text
                     textStyle={{
                       ...theme.typography.semantic.heading,
-                      color: theme.colors.foreground,
                       letterSpacing: theme.letterSpacing.brand,
                     }}>
                     {t('common.appName')}
@@ -101,18 +103,18 @@ export function AuthScreen({
                 modifiers={fillWidthModifiers}
                 style={fillWidthStyle()}>
                 <Text
+                  semantic="primary"
                   textStyle={{
                     ...theme.typography.semantic.overline,
-                    color: theme.colors.primary,
                     letterSpacing: theme.letterSpacing.overline,
                     textAlign,
                   }}>
                   {eyebrow}
                 </Text>
                 <Text
+                  semantic="muted"
                   textStyle={{
                     ...theme.typography.semantic.body,
-                    color: theme.colors.mutedForeground,
                     textAlign,
                   }}>
                   {description}

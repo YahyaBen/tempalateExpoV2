@@ -1,9 +1,4 @@
-import { Button, Row, Text } from '@expo/ui';
-
-import {
-  fillWidthModifiers,
-  fillWidthStyle,
-} from '@/components/ui/universal-layout';
+import { Button, Row, Text } from '@/components/ui/universal';
 import { useThemeTokens } from '@/hooks/use-theme';
 
 export function GoogleButton({
@@ -19,19 +14,10 @@ export function GoogleButton({
 
   return (
     <Button
+      fullWidth
       variant="outlined"
       disabled={disabled}
-      onPress={onPress}
-      modifiers={fillWidthModifiers}
-      style={fillWidthStyle({
-        height: theme.controlHeight.lg,
-        paddingHorizontal: theme.space(4),
-        borderRadius: theme.radius.xlarge,
-        borderWidth: theme.components.button.borderWidth,
-        borderColor: theme.colors.border,
-        backgroundColor: theme.colors.card,
-        opacity: disabled ? theme.opacity.disabled : 1,
-      })}>
+      onPress={onPress}>
       <Row spacing={theme.space(3)} alignment="center">
         <Text
           textStyle={{
@@ -42,10 +28,7 @@ export function GoogleButton({
           G
         </Text>
         <Text
-          textStyle={{
-            ...theme.typography.semantic.label,
-            color: theme.colors.foreground,
-          }}>
+          textStyle={theme.typography.semantic.label}>
           {label}
         </Text>
       </Row>

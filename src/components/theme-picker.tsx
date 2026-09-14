@@ -1,11 +1,14 @@
-import { Column, Picker, Text, type UniversalStyle } from '@expo/ui';
 import { useTranslation } from 'react-i18next';
 
-import { THEME_PREFERENCE, type ThemePreference } from '@/constants/theme.constant';
 import {
+  Column,
   fillWidthModifiers,
   fillWidthStyle,
-} from '@/components/ui/universal-layout';
+  Picker,
+  Text,
+  type UniversalStyle,
+} from '@/components/ui/universal';
+import { THEME_PREFERENCE, type ThemePreference } from '@/constants/theme.constant';
 import { useThemePreference } from '@/hooks/use-color-scheme';
 import { useThemeTokens } from '@/hooks/use-theme';
 
@@ -43,9 +46,9 @@ export function ThemePicker({ style, showDescription = true }: ThemePickerProps)
       </Picker>
       {showDescription ? (
         <Text
+          semantic="muted"
           textStyle={{
             ...theme.typography.semantic.caption,
-            color: theme.colors.mutedForeground,
             textAlign: 'center',
           }}>
           {description}

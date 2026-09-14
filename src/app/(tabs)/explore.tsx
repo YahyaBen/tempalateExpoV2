@@ -1,17 +1,22 @@
-import { Button, Column, RNHostView, ScrollView, Spacer, Text } from '@expo/ui';
 import { Image } from 'expo-image';
 import { openBrowserAsync, WebBrowserPresentationStyle } from 'expo-web-browser';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ThemePicker } from '@/components/theme-picker';
-import { Collapsible } from '@/components/ui/collapsible';
-import { UniversalHost } from '@/components/ui/universal-host';
 import {
+  Button,
+  Collapsible,
+  Column,
   fillSizeModifiers,
   fillSizeStyle,
   fillWidthModifiers,
   fillWidthStyle,
-} from '@/components/ui/universal-layout';
+  RNHostView,
+  ScrollView,
+  Spacer,
+  Text,
+  UniversalHost,
+} from '@/components/ui/universal';
 import { useThemeTokens } from '@/hooks/use-theme';
 
 async function openExternalLink(url: string) {
@@ -47,15 +52,14 @@ export default function ExploreScreen() {
             <Text
               textStyle={{
                 ...theme.typography.semantic.display,
-                color: theme.colors.foreground,
                 textAlign: 'center',
               }}>
               Explore
             </Text>
             <Text
+              semantic="muted"
               textStyle={{
                 ...theme.typography.semantic.body,
-                color: theme.colors.mutedForeground,
                 textAlign: 'center',
               }}>
               {'This starter app includes example code to help you get started.'}
@@ -77,17 +81,11 @@ export default function ExploreScreen() {
                 modifiers={fillWidthModifiers}
                 style={fillWidthStyle({ padding: theme.space(4) })}>
                 <Text
-                  textStyle={{
-                    ...theme.typography.text.small,
-                    color: theme.colors.foreground,
-                  }}>
+                  textStyle={theme.typography.text.small}>
                   {'This app has two tab screens: src/app/(tabs)/index.tsx and src/app/(tabs)/explore.tsx.'}
                 </Text>
                 <Text
-                  textStyle={{
-                    ...theme.typography.text.small,
-                    color: theme.colors.foreground,
-                  }}>
+                  textStyle={theme.typography.text.small}>
                   {'The layout files configure protected authentication routes and native tabs.'}
                 </Text>
                 <Button
@@ -107,7 +105,6 @@ export default function ExploreScreen() {
                 <Text
                   textStyle={{
                     ...theme.typography.text.small,
-                    color: theme.colors.foreground,
                     textAlign: 'center',
                   }}>
                   {'The universal Expo UI components in this app render through Jetpack Compose, SwiftUI, and the web implementation.'}
@@ -128,10 +125,7 @@ export default function ExploreScreen() {
                 modifiers={fillWidthModifiers}
                 style={fillWidthStyle({ padding: theme.space(4) })}>
                 <Text
-                  textStyle={{
-                    ...theme.typography.text.small,
-                    color: theme.colors.foreground,
-                  }}>
+                  textStyle={theme.typography.text.small}>
                   {'Expo Image remains the right component for bitmap assets because the universal Expo UI layer does not provide an image component.'}
                 </Text>
                 <RNHostView matchContents>
@@ -154,10 +148,7 @@ export default function ExploreScreen() {
                 modifiers={fillWidthModifiers}
                 style={fillWidthStyle({ padding: theme.space(4) })}>
                 <Text
-                  textStyle={{
-                    ...theme.typography.text.small,
-                    color: theme.colors.foreground,
-                  }}>
+                  textStyle={theme.typography.text.small}>
                   {'Choose a theme using the universal Expo UI picker.'}
                 </Text>
                 <ThemePicker />
@@ -170,10 +161,7 @@ export default function ExploreScreen() {
                 modifiers={fillWidthModifiers}
                 style={fillWidthStyle({ padding: theme.space(4) })}>
                 <Text
-                  textStyle={{
-                    ...theme.typography.text.small,
-                    color: theme.colors.foreground,
-                  }}>
+                  textStyle={theme.typography.text.small}>
                   {'Forms, buttons, text, sheets, pickers, scrolling, and disclosure controls now use the universal @expo/ui API.'}
                 </Text>
               </Column>
