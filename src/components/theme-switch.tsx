@@ -5,7 +5,6 @@ import {
   DARK_MODE_ICON,
   Icon,
   LIGHT_MODE_ICON,
-  Text,
 } from '@/components/ui/universal';
 import { THEME_PREFERENCE } from '@/constants/theme.constant';
 import { useThemePreference } from '@/context/theme-context';
@@ -34,17 +33,11 @@ export function ThemeSwitch() {
         borderWidth: theme.borderWidth.small,
         borderColor: theme.colors.border,
       }}>
-      {process.env.EXPO_OS === 'web' ? (
-        <Text textStyle={{ color: theme.colors.foreground, fontSize: 20, lineHeight: 22 }}>
-          {isDark ? '☾' : '☀'}
-        </Text>
-      ) : (
-        <Icon
-          name={isDark ? DARK_MODE_ICON : LIGHT_MODE_ICON}
-          size={22}
-          color={theme.colors.foreground}
-        />
-      )}
+      <Icon
+        name={isDark ? DARK_MODE_ICON : LIGHT_MODE_ICON}
+        size={22}
+        color={theme.colors.foreground}
+      />
     </Button>
   );
 }

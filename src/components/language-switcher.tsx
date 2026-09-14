@@ -60,18 +60,12 @@ export function LanguageSwitcher() {
           borderWidth: theme.borderWidth.small,
           borderColor: theme.colors.border,
         }}>
-        {process.env.EXPO_OS === 'web' ? (
-          <Text textStyle={{ color: theme.colors.foreground, fontSize: 18, fontWeight: '700' }}>
-            文
-          </Text>
-        ) : (
-          <Icon
-            name={LANGUAGE_ICON}
-            size={22}
-            color={theme.colors.foreground}
-            accessibilityLabel={t('common.language')}
-          />
-        )}
+        <Icon
+          name={LANGUAGE_ICON}
+          size={22}
+          color={theme.colors.foreground}
+          accessibilityLabel={t('common.language')}
+        />
       </Button>
 
       <BottomSheet

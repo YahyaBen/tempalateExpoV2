@@ -48,24 +48,16 @@ export type {
   UniversalAlignment,
   UniversalBaseProps,
   UniversalFontWeight,
-  UniversalHostProps,
   UniversalStyle,
   UniversalTextStyle,
 } from '@expo/ui';
 
-export { Alert, AlertBanner, AlertDialog } from './alert';
-export type {
-  AlertAction,
-  AlertBannerProps,
-  AlertBannerVariant,
-  AlertDialogProps,
-} from './alert';
 export { Button } from './button';
 export type { ButtonProps, ButtonSemantic } from './button.types';
 export { Collapsible } from './collapsible';
 export { fillSizeModifiers, fillSizeStyle, fillWidthModifiers, fillWidthStyle } from './fill';
 export { Host, UniversalHost } from './host';
-export type { HostProps } from './host';
+export type { HostProps, UniversalHostProps } from './host';
 export { DARK_MODE_ICON, LANGUAGE_ICON, LIGHT_MODE_ICON } from './icons';
 export { Text } from './text';
 export type { TextProps, TextSemantic } from './text.types';

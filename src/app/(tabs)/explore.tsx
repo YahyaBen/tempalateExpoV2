@@ -96,7 +96,7 @@ export default function ExploreScreen() {
               </Column>
             </Collapsible>
 
-            <Collapsible title="Android, iOS, and web support">
+            <Collapsible title="Android and iOS support">
               <Column
                 spacing={theme.space(2)}
                 alignment="center"
@@ -107,14 +107,8 @@ export default function ExploreScreen() {
                     ...theme.typography.text.small,
                     textAlign: 'center',
                   }}>
-                  {'The universal Expo UI components in this app render through Jetpack Compose, SwiftUI, and the web implementation.'}
+                  {'The universal Expo UI components in this app render through Jetpack Compose on Android and SwiftUI on iOS.'}
                 </Text>
-                <RNHostView matchContents>
-                  <Image
-                    source={require('@/assets/images/tutorial-web.png')}
-                    style={{ width: 296, height: 171, borderRadius: 6 }}
-                  />
-                </RNHostView>
               </Column>
             </Collapsible>
 
